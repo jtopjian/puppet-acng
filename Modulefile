@@ -1,0 +1,8 @@
+name 'jtopjian-acng'
+version '1.0.0'
+source 'git://github.com/jtopjian/puppet-acng.git'
+author 'jtopjian'
+license 'Apache 2.0'
+summary 'A simple module to work with apt-cacher-ng'
+description 'A simple module to work with apt-cacher-ng'
+project_page 'https://github.com/jtopjian/puppet-acng'
