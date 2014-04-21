@@ -1,3 +1,15 @@
+# == Class: acng::server
+#
+# Configures a node to be an acng server
+#
+# === Parameters
+#
+#   - *ensure*: The state of the acng service on the node.
+#   - *enable*: To enable the service or not.
+#
+# === Example
+#
+#   class { 'acng::server': }
 #
 class acng::server (
   $ensure = present,
@@ -9,8 +21,8 @@ class acng::server (
   }
 
   service { 'apt-cacher-ng':
+    ensure     => $ensure,
     enable     => $enable,
-    ensure     => $enable,
     hasrestart => true,
     hasstatus  => true,
     require    => Package['apt-cacher-ng'],

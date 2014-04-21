@@ -1,3 +1,3 @@
-class { 'acng::client': 
+class { 'acng::client':
   server => 'proxy.example.com',
 }
