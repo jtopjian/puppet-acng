@@ -12,7 +12,7 @@
 #   class { 'acng::server': }
 #
 class acng::server (
-  $ensure = present,
+  $ensure = 'present',
   $enable = true
 ) {
 
@@ -20,8 +20,14 @@ class acng::server (
     ensure => $ensure,
   }
 
+  if $enable {
+    $service_ensure = 'running'
+  } else {
+    $service_ensure = 'stopped'
+  }
+
   service { 'apt-cacher-ng':
-    ensure     => $ensure,
+    ensure     => $service_ensure,
     enable     => $enable,
     hasrestart => true,
     hasstatus  => true,
