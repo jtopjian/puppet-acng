@@ -1,0 +1,40 @@
+VAGRANTFILE_API_VERSION = "2"
+
+servers = ['acng_server', 'acng_client']
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "fgrehm/trusty64-lxc"
+
+  # You might need to comment this out
+  config.vm.provider :lxc do |lxc|
+    lxc.backingstore = 'zfs'
+  end
+
+  servers.each do |server|
+    config.vm.define server do |s|
+
+      # The shell provisioner installs puppet, git, and r10k
+      # It then runs r10k which installs the modules listed
+      # in the Puppetfile.
+      s.vm.provision 'shell', path: 'sh/bootstrap.sh'
+
+      # The puppet provisioner runs the manifest named after
+      # the server. Tailor the manifest to create an
+      # environment that reflects the module being tested.
+      s.vm.provision 'puppet' do |puppet|
+        puppet.options = '--verbose'
+        puppet.module_path = 'puppet/modules'
+        puppet.manifests_path = 'puppet/manifests/'
+        puppet.manifest_file = "#{server}.pp"
+        puppet.hiera_config_path = 'puppet/hiera.yaml'
+      end
+
+      # Finally, serverspec is used to validate the puppet
+      # manifest set everything up correctly.
+      s.vm.provision :serverspec do |spec|
+        spec.pattern = "spec/#{server}_spec.rb"
+      end
+
+    end
+  end
+end

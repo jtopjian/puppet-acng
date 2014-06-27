@@ -1,0 +1,2 @@
+mod 'acng',
+  :git => 'https://github.com/jtopjian/puppet-acng'
