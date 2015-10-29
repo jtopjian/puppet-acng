@@ -13,7 +13,9 @@
 #
 class acng::server (
   $ensure = 'present',
-  $enable = true
+  $enable = true,
+  $admin_user = undef,
+  $admin_pass = undef
 ) {
 
   package { 'apt-cacher-ng':
@@ -34,4 +36,12 @@ class acng::server (
     require    => Package['apt-cacher-ng'],
   }
 
+  file { '/etc/apt-cacher-ng/security.conf':
+    notify  => Service["apt-cacher-ng"],
+    ensure  => $ensure,
+    owner   => 'root',
+    group   => 'apt-cacher-ng',
+    mode    => '0640',
+    content => "AdminAuth: ${admin_user}:${admin_pass}\n",
+  }
 }
