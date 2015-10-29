@@ -37,6 +37,7 @@ class acng::server (
   }
 
   file { '/etc/apt-cacher-ng/security.conf':
+    notify  => Service["apt-cacher-ng"],
     ensure  => $ensure,
     owner   => 'root',
     group   => 'apt-cacher-ng',
