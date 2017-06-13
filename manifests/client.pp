@@ -9,7 +9,7 @@ class acng::client (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    content => "Acquire::http { Proxy \"http://${server}:3142\"; };",
+    content => "Acquire::http::Proxy \"http://${server}:3142\"; ",
   }
 }
 
